@@ -13,7 +13,14 @@ This Terraform stack deploys:
 
 - AWS account with permissions to create: VPC, subnets, ECS, RDS, ALB, IAM roles, and Secrets Manager  
 - ACM SSL certificate in the same AWS region as the ALB  
-- Docker image available either on **Docker Hub** or **ECR**  
+- Docker image available either on **Docker Hub** or **ECR**
+
+---
+
+## Planned improvemnts
+- **Multi-AZ Deployment**: Add second availability zone for high availability
+- **Auto Scaling**: Implement CPU/memory-based scaling policies  
+- **Custom Domain**: Route53 integration for branded endpoints
 
 ---
 
