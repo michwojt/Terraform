@@ -1,0 +1,83 @@
+#########################################
+# terraform.tfvars.example
+# Copy this file to terraform.tfvars and customize the values
+# Run: cp terraform.tfvars.example terraform.tfvars
+#########################################
+
+#########################################
+# Basic Project Configuration
+#########################################
+project_name = "my-api"
+aws_region   = "us-east-1"
+az           = "us-east-1a"
+
+#########################################
+# Network Configuration
+#########################################
+vpc_cidr = "10.0.0.0/16"
+
+# Current example restricts access to 75.2.60.* range
+allowed_https_cidr = "75.2.60.0/24"
+
+#########################################
+# Application Container Settings
+#########################################
+# REQUIRED: Specify your application container image
+container_image = "nginx:latest"
+# For ECR: "123456789012.dkr.ecr.us-east-1.amazonaws.com/my-app:v1.0.0"
+
+container_port  = 8080
+desired_count   = 2
+fargate_cpu     = 512
+fargate_memory  = 1024
+
+# Optional: Override default container command
+# app_command = ["./start.sh", "--port", "8080"]
+
+#########################################
+# HTTPS Certificate (REQUIRED)
+#########################################
+# REQUIRED: ACM certificate ARN for HTTPS
+# Create certificate in AWS Certificate Manager first
+certificate_arn = "arn:aws:acm:us-east-1:123456789012:certificate/12345678-1234-1234-1234-123456789012"
+
+#########################################
+# Database Configuration
+#########################################
+db_name               = "myapp_prod"
+db_username           = "app_user"
+db_engine_version     = "16.3"
+db_instance_class     = "db.t4g.micro"
+db_allocated_storage  = 20
+
+# Database environment variables for app container
+db_password_env_name_app = "DATABASE_PASSWORD"
+
+# Additional environment variables for your application
+app_db_env_vars = {
+  "APP_ENV"           = "production"
+  "DATABASE_POOL_SIZE" = "10"
+  "LOG_LEVEL"         = "info"
+}
+
+#########################################
+# Database Migration Settings (Optional)
+#########################################
+run_migration = true
+
+# Container for running database migrations
+container_image_migration = "nginx:latest"
+# For ECR: "123456789012.dkr.ecr.us-east-1.amazonaws.com/my-app-migrations:v1.0.0"
+
+migration_command = ["./migrate.sh", "up"]
+migration_cpu     = "256"
+migration_memory  = "512"
+
+# Database environment variables for migration container
+db_password_env_name_migration = "DB_PASSWORD"
+
+# Additional environment variables for migration container
+migration_db_env_vars = {
+  "MIGRATION_ENV" = "production"
+  "VERBOSE"       = "true"
+}
